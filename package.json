@@ -1,0 +1,16 @@
+{
+  "name": "com.glitchedpolygons.unity.locales",
+  "displayName": "Glitched Locale Client",
+  "version": "1.0.0",
+  "unity": "2022.2",
+  "description": "Client implementation of the Glitched Locale Server for Unity projects.",
+  "licenseUrl": "https://raw.githubusercontent.com/GlitchedPolygons/UnityGlitchedLocaleClient/main/LICENSE.md",
+  "author": {
+    "name": "Glitched Polygons",
+    "url": "https://glitchedpolygons.com/"
+  },
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6",
+    "com.unity.nuget.newtonsoft-json": "3.0.2"
+  }
+}
