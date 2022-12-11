@@ -6,7 +6,7 @@ namespace GlitchedPolygons.Localization
 {
     /// <summary>
     /// This is a component that references a <see cref="LocalizationBucket"/>
-    /// and hooks into its dictionary to translate either a UI <see cref="Text"/> or a <see cref="TMP_Text"/> component's string value.
+    /// and hooks into its dictionary to translate either a UI <c>Text</c> or a <c>TMP_Text</c> component's string value.
     /// </summary>
     public class LocalizedText : MonoBehaviour
     {
