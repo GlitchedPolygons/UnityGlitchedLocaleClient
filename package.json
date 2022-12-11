@@ -5,6 +5,7 @@
   "unity": "2022.2",
   "description": "Client implementation of the Glitched Locale Server for Unity projects.",
   "licenseUrl": "https://raw.githubusercontent.com/GlitchedPolygons/UnityGlitchedLocaleClient/main/LICENSE.md",
+  "documentationUrl": "https://glitchedpolygons.github.io/UnityGlitchedLocaleClientDocs/api/GlitchedPolygons.Localization.html",
   "author": {
     "name": "Glitched Polygons",
     "url": "https://glitchedpolygons.com/"
