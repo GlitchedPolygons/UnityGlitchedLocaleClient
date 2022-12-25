@@ -196,6 +196,9 @@ namespace GlitchedPolygons.Localization
         private string userId = string.Empty;
 
         [SerializeField]
+        private string apiKey = string.Empty;
+        
+        [SerializeField]
         private string readAccessPassword = string.Empty;
 
         [SerializeField]
@@ -464,6 +467,11 @@ namespace GlitchedPolygons.Localization
                 };
 
                 using var httpContent = new StringContent(JsonUtility.ToJson(dto), Encoding.UTF8, "application/json");
+
+                if (!string.IsNullOrEmpty(apiKey))
+                {
+                    httpContent.Headers.Add("API-Key", apiKey);
+                }
 
                 HttpResponseMessage response = await httpClient.PostAsync(localeServerTranslationEndpoint, httpContent);
 
