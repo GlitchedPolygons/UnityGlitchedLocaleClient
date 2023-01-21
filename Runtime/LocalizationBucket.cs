@@ -8,11 +8,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
@@ -167,23 +165,23 @@ namespace GlitchedPolygons.Localization
         /// Its frontend is reachable under: https://locales.glitchedpolygons.com
         /// </summary>
         public const string DEFAULT_LOCALE_SERVER_BASE_URL = "https://api.locales.glitchedpolygons.com";
-        
+
         /// <summary>
         /// Default endpoint path to use for fetching translations from the server.
         /// </summary>
         public const string DEFAULT_LOCALE_SERVER_TRANSLATION_ENDPOINT = "/api/v1/translations/translate";
-        
+
         /// <summary>
         /// This event is raised when the <see cref="LocalizationBucket"/> refreshed its dictionary of translations.<para> </para>
         /// Interested scripts should subscribe to this event in order to know that they should refresh their labels/UI/usages of the translations.
         /// </summary>
         public event Action Refreshed;
-        
+
         /// <summary>
         /// This event is raised whenever the <see cref="SetLocale"/> method is called, such that interested subscribers know when to refresh their labels in the UI to reflect the new language setting.
         /// </summary>
         public event Action<string> ChangedLocale;
-        
+
         /// <summary>
         /// This event is raised when a connection attempt to the locale server resulted in a failure.
         /// </summary>
@@ -197,7 +195,7 @@ namespace GlitchedPolygons.Localization
 
         [SerializeField]
         private string apiKey = string.Empty;
-        
+
         [SerializeField]
         private string readAccessPassword = string.Empty;
 
@@ -249,7 +247,6 @@ namespace GlitchedPolygons.Localization
         private bool refreshing = false;
 
         private readonly HttpClient httpClient = new();
-        private readonly BinaryFormatter binaryFormatter = new();
 
         private void Awake()
         {
@@ -305,7 +302,7 @@ namespace GlitchedPolygons.Localization
             }
 
 #if UNITY_EDITOR
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 #endif
         }
 
@@ -333,7 +330,7 @@ namespace GlitchedPolygons.Localization
             {
                 return false;
             }
-            
+
             localeServerBaseUrl = newLocaleServerBaseUrl;
             localeServerTranslationEndpoint = translationEndpoint;
             httpClient.BaseAddress = new Uri(localeServerBaseUrl);
@@ -556,12 +553,14 @@ namespace GlitchedPolygons.Localization
         /// </summary>
         public void WriteCacheToDisk()
         {
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 using var fileStream = new FileStream(Path.Combine(cacheDirectory, bucketId), FileMode.OpenOrCreate);
                 using var brotli = new BrotliStream(fileStream, CompressionLevel.Optimal, false);
-
-                binaryFormatter.Serialize(brotli, cache);
+                
+                string json = JsonConvert.SerializeObject(cache, Formatting.None);
+                
+                brotli.Write(Encoding.UTF8.GetBytes(json));
             });
         }
 
@@ -583,8 +582,13 @@ namespace GlitchedPolygons.Localization
                 {
                     using FileStream fileStream = new(cacheFilePath, FileMode.OpenOrCreate);
                     using BrotliStream brotli = new(fileStream, CompressionMode.Decompress);
+                    using MemoryStream memoryStream = new();
 
-                    cache = binaryFormatter.Deserialize(brotli) as ConcurrentDictionary<string, ConcurrentDictionary<string, string>>;
+                    brotli.CopyTo(memoryStream);
+
+                    string json = Encoding.UTF8.GetString(memoryStream.ToArray());
+
+                    cache = JsonConvert.DeserializeObject<ConcurrentDictionary<string, ConcurrentDictionary<string, string>>>(json);
                 });
 
                 DateTime startedLoadingUTC = DateTime.UtcNow;
