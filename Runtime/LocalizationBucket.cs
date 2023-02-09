@@ -206,8 +206,8 @@ namespace GlitchedPolygons.Localization
         private string localeServerTranslationEndpoint = DEFAULT_LOCALE_SERVER_TRANSLATION_ENDPOINT;
 
         [SerializeField]
-        [Range(1, 1000)]
-        private int minSecondsBetweenRequests = 120;
+        [Range(300, 345600)]
+        private int minSecondsBetweenRequests = 86400;
 
         [SerializeField]
         [Range(64, 8192)]
