@@ -217,6 +217,9 @@ namespace GlitchedPolygons.Localization
         private bool usePlayerPrefs = true;
 
         [SerializeField]
+        private bool returnTranslationKeyWhenNotFound = false;
+
+        [SerializeField]
         private string playerPrefsIdLocaleIndex = "LocaleIndex";
 
         [SerializeField]
@@ -537,12 +540,12 @@ namespace GlitchedPolygons.Localization
         {
             if (!cache.TryGetValue(key, out ConcurrentDictionary<string, string> translations))
             {
-                return null;
+                return returnTranslationKeyWhenNotFound ? key : null;
             }
 
             if (!translations.TryGetValue(locales[localeIndex], out string translation))
             {
-                return null;
+                return returnTranslationKeyWhenNotFound ? key : null;
             }
 
             return translation;
