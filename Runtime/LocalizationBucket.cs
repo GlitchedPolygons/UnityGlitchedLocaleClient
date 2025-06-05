@@ -164,7 +164,7 @@ namespace GlitchedPolygons.Localization
         /// Default base URL that points to the official Glitched Polygons Locale Server.
         /// Its frontend is reachable under: https://locales.glitchedpolygons.com
         /// </summary>
-        public const string DEFAULT_LOCALE_SERVER_BASE_URL = "https://api.locales.glitchedpolygons.com";
+        public const string DEFAULT_LOCALE_SERVER_BASE_URL = "https://api-locales.glitchedpolygons.com";
 
         /// <summary>
         /// Default endpoint path to use for fetching translations from the server.
